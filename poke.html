@@ -21,6 +21,7 @@
   <div id="pokemon">
     <h2 id="pokemonName"></h2>
     <h3 id="pokemonJapaneseName"></h3>
+    <h3 id="pokemonChineseName"></h3>
     <img id="pokemonImage" src="">
   </div>
 </main>
@@ -28,10 +29,11 @@
 <script>
   let pokemonName = document.getElementById('pokemonName');
   let pokemonJapaneseName = document.getElementById('pokemonJapaneseName');
+  let pokemonChineseName = document.getElementById('pokemonChineseName');
   let pokemonImage = document.getElementById('pokemonImage');
 
   // ポケモンは現在898種
-  let pokemonNumber = Math.floor(Math.random() * 898) + 1;
+  let pokemonNumber = Math.floor(Math.random() * 50) + 1;
  
   // PokéAPIからデータを取得し、名前と画像を表示
   fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonNumber}`)
@@ -53,12 +55,22 @@
       // names 配列の中から日本語を探す
       let jpNameObj = speciesData.names.find(n => n.language.name === "ja-Hrkt") 
                    || speciesData.names.find(n => n.language.name === "ja");
-
+      
       if (jpNameObj) {
         pokemonJapaneseName.textContent = jpNameObj.name;
       } else {
         pokemonJapaneseName.textContent = "（日本語名不明）";
       }
+
+      let zhNameObj = speciesData.names.find(n => n.language.name === "zh-Hant") 
+                   || speciesData.names.find(n => n.language.name === "zh");
+
+      if (zhNameObj) {
+        pokemonChineseName.textContent = zhNameObj.name;
+      } else {
+        pokemonChineseName.textContent = "中国語名: 不明";
+      }
+
     })
     .catch(error => {
       console.error(`エラーが発生しました:${error}`);
