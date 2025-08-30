@@ -39,10 +39,13 @@
 
   // 結果を表示する要素を取得
   let guessResult = document.querySelector('#guessResult');
-
+  let count = 0
   // ユーザーの入力をチェックし、結果を表示
   function checkGuess() {
     // ユーザの入力した値を取得
+    count = count+1
+    console.log(count);
+    
     let userGuess = Number(guessField.value);
 
     if (userGuess === answerNumber) { // ユーザの入力が正解
