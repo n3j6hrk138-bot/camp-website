@@ -14,6 +14,10 @@
   </style>
   <script src="https://cdn.jsdelivr.net/npm/pinyin-pro/dist/index.min.js">
   </script>
+  <!-- romanize-korean をCDNで読み込み -->
+  <script2 src="https://cdn.jsdelivr.net/npm/romanize-korean/dist/romanize-korean.min.js">
+  </script2>
+
 </head>
 <body>
 
@@ -26,6 +30,7 @@
     <h3 id="pokemonChineseName"></h3>
     <h4 id="pokemonPinyin"></h4>
     <h5 id="pokemonKoreanName"></h5>
+    <h6 id="pokemonRomanize"></h6>
     <img id="pokemonImage" src="">
   </div>
 </main>
@@ -35,6 +40,7 @@
   let pokemonJapaneseName = document.getElementById('pokemonJapaneseName');
   let pokemonChineseName = document.getElementById('pokemonChineseName');
   let pokemonPinyin = document.getElementById('pokemonPinyin');
+  let pokemonRomanize = document.getElementById('pokemonKoreanName');
   let pokemonImage = document.getElementById('pokemonImage');
 
   // ポケモンは現在898種
@@ -82,9 +88,13 @@
       
       if (koNameObj) {
         pokemonKoreanName.textContent = koNameObj.name;
-      } else {
-        pokemonJapaneseName.textContent = "（韓国語名不明）";
-      }
+        let koreanRomanized = romanizeKorean(koreanName);
+        let koreanRomanizedElem = document.createElement("h6");
+        koreanRomanizedElem.textContent = koreanRomanized;
+        document.getElementById("pokemon").appendChild(koreanRomanizedElem);
+    } else {
+        pokemonKoreanName.textContent = "（韓国語名不明）";
+    }
 
     })
     .catch(error => {
