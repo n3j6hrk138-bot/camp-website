@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <title>NASA 衛星画像検索</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+  <style>
+    #satelliteImage {
+      width: 100%;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+
+<main class="container">
+  <h1>NASA 衛星画像検索</h1>
+
+  <form id="searchForm">
+    <label>
+      緯度（lat）:
+      <input type="number" step="0.0001" id="lat" value="35.6812">
+    </label>
+    <label>
+      経度（lon）:
+      <input type="number" step="0.0001" id="lon" value="139.7671">
+    </label>
+    <label>
+      日付（YYYY-MM-DD）:
+      <input type="date" id="date" value="2020-01-01">
+    </label>
+    <button type="submit">検索</button>
+  </form>
+
+  <div id="result">
+    <h2 id="location"></h2>
+    <img id="satelliteImage" src="">
+  </div>
+</main>
+
+<script>
+  const form = document.getElementById('searchForm');
+  const satelliteImage = document.getElementById('satelliteImage');
+  const locationTitle = document.getElementById('location');
+
+  const API_KEY = "qOfZhH3IQG5jr9yxvpqf1JV7VO5EvKAeedCN0pHP"; // ← ここに自分の NASA API Key を入れてください
+
+  form.addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const lat = document.getElementById('lat').value;
+    const lon = document.getElementById('lon').value;
+    const date = document.getElementById('date').value;
+
+    fetch(`https://api.nasa.gov/planetary/earth/assets?lon=${lon}&lat=${lat}&date=${date}&dim=0.1&api_key=${API_KEY}`)
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        if (data.url) {
+          satelliteImage.src = data.url;
+          locationTitle.textContent = `緯度:${lat}, 経度:${lon} の衛星画像`;
+        } else {
+          locationTitle.textContent = "画像が見つかりませんでした。";
+          satelliteImage.src = "";
+        }
+      })
+      .catch(error => {
+        console.error("エラー:", error);
+      });
+  });
+</script>
+
+</body>
+</html>
